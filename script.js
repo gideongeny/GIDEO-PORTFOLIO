@@ -5,7 +5,11 @@ document.addEventListener("DOMContentLoaded", function() {
   
   navToggle.addEventListener("click", function() {
     navLinks.classList.toggle("active");
-    document.body.style.overflow = navLinks.classList.contains("active") ? "hidden" : "";
+    if (window.innerWidth <= 900 && navLinks.classList.contains("active")) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
   });
   
   // Close mobile menu when clicking on a link
@@ -172,4 +176,59 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   });
+
+  // Dark/Light Mode Toggle
+  const themeToggle = document.getElementById('theme-toggle');
+  const body = document.body;
+
+  // Load theme from localStorage
+  if (localStorage.getItem('theme') === 'dark') {
+    body.classList.add('dark-mode');
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      } else {
+        localStorage.setItem('theme', 'light');
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+    });
+    // Set correct icon on load
+    if (body.classList.contains('dark-mode')) {
+      themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    } else {
+      themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    }
+  }
+
+  // Animate Skill Bars on Scroll
+  function animateSkillBars() {
+    const skillBars = document.querySelectorAll('.skill-bar .progress');
+    skillBars.forEach(bar => {
+      const rect = bar.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 60) {
+        bar.style.transition = 'width 1.2s cubic-bezier(.4,2,.6,1)';
+        bar.style.width = bar.getAttribute('style').match(/width: (\d+%)/)[1];
+      }
+    });
+  }
+  window.addEventListener('scroll', animateSkillBars);
+  window.addEventListener('DOMContentLoaded', animateSkillBars);
+
+  // Hide navToggle (hamburger) on desktop
+  function handleNavToggleDisplay() {
+    if (window.innerWidth > 900) {
+      navToggle.style.display = "none";
+      navLinks.classList.remove("active");
+      document.body.style.overflow = "";
+    } else {
+      navToggle.style.display = "block";
+    }
+  }
+  window.addEventListener("resize", handleNavToggleDisplay);
+  handleNavToggleDisplay();
 });

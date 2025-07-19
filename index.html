@@ -23,8 +23,11 @@
       <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li><a href="#contact" class="hire-btn">Hire Me</a></li>
     </ul>
+    <div class="navbar-actions">
+      <a href="Gideon_Ngeno_CV.pdf" class="hire-btn" download>Download CV</a>
+      <button id="theme-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+    </div>
   </nav>
 
   <!-- Hero Section with Profile Image -->
@@ -32,14 +35,23 @@
     <div class="hero-container">
       <div class="hero-content">
         <div class="profile-image-container">
-          <img src="profile.jpg" alt="Gideon Ngeno" class="profile-image">
+          <img src="profile-main.jpg" alt="Gideon Ngeno" class="profile-image main-profile">
         </div>
         <h1>Hi, I'm <span class="highlight">Gideon Cheruiyot Ngeno</span></h1>
         <p class="hero-subtitle">Full-Stack & Mobile Developer</p>
         <p class="hero-text">Passionate about building practical, user-friendly applications for web and mobile platforms. Specialized in Android development and full-stack solutions.</p>
         <div class="hero-cta">
-          <!-- <a href="Gideon_Ngeno_CV.pdf" download class="btn">Download CV</a> -->
           <a href="#contact" class="btn secondary">Get In Touch</a>
+          <a href="Gideon_Ngeno_CV.pdf" class="btn" download>Download CV</a>
+          <div class="social-icons">
+            <a href="https://wa.me/254720317626" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.facebook.com/gideo.cheruiyot.2025" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/gideo.cheruiyot.2025/?hl=en" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://web.telegram.org/a/" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+            <a href="https://github.com/gideongeny" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/gideo-ngeng-120437230/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="mailto:gideongeng@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+          </div>
         </div>
       </div>
     </div>
@@ -47,76 +59,122 @@
 
   <!-- About -->
   <section id="about" class="about">
-    <h2>About Me</h2>
-    <p>I'm a passionate and driven software developer focused on building practical, user-friendly applications for both web and mobile platforms. With a solid foundation in full-stack development, I bring creativity, technical precision, and real-world problem-solving to every project I work on.</p>
-    <p>As an Android developer, I specialize in intuitive and efficient apps using Android Studio, Java, and Kotlin. I integrate APIs, manage data, and ensure responsiveness across devices.</p>
-    <p>What drives me is not just technology, but the opportunity to create, solve, and improve. I value collaboration, love innovation, and write clean, meaningful code.</p>
+    <div class="about-content">
+      <div class="about-text">
+        <h2>About Me</h2>
+        <p>I'm a passionate and driven software developer focused on building practical, user-friendly applications for both web and mobile platforms. With a solid foundation in full-stack development, I bring creativity, technical precision, and real-world problem-solving to every project I work on.</p>
+        <p>As an Android developer, I specialize in intuitive and efficient apps using Android Studio, Java, and Kotlin. I integrate APIs, manage data, and ensure responsiveness across devices.</p>
+        <p>What drives me is not just technology, but the opportunity to create, solve, and improve. I value collaboration, love innovation, and write clean, meaningful code.</p>
+      </div>
+      <div class="about-image">
+        <img src="about-bg.jpg" alt="Gideon Ngeno in Nairobi" class="about-bg-image">
+      </div>
+    </div>
   </section>
 
   <!-- Skills -->
   <section id="skills" class="skills">
     <h2>Technical Skills</h2>
     <div class="skills-container">
-      <div class="skill-category">
-        <h3>Frontend Development</h3>
-        <ul>
-          <li>HTML</li>
-          <li>CSS</li>
-          <li>JavaScript</li>
-          <li>React.js</li>
-          <li>UI/UX Design</li>
-        </ul>
+      <div class="skill-bar">
+        <span><i class="fab fa-html5"></i> HTML5/CSS3</span>
+        <div class="bar"><div class="progress" style="width: 95%"></div></div>
       </div>
-      <div class="skill-category">
-        <h3>Backend Development</h3>
-        <ul>
-          <li>Python</li>
-          <li>Flask</li>
-          <li>Django</li>
-          <li>Node.js</li>
-          <li>PHP</li>
-          <li>REST APIs</li>
-        </ul>
+      <div class="skill-bar">
+        <span><i class="fab fa-js"></i> JavaScript</span>
+        <div class="bar"><div class="progress" style="width: 90%"></div></div>
       </div>
-      <div class="skill-category">
-        <h3>Mobile Development</h3>
-        <ul>
-          <li>Android Studio</li>
-          <li>Java</li>
-          <li>Kotlin</li>
-          <li>Flutter</li>
-        </ul>
+      <div class="skill-bar">
+        <span><i class="fab fa-react"></i> React.js</span>
+        <div class="bar"><div class="progress" style="width: 85%"></div></div>
       </div>
-      <div class="skill-category">
-        <h3>Database & Tools</h3>
-        <ul>
-          <li>MySQL</li>
-          <li>SQLite</li>
-          <li>MongoDB</li>
-          <li>Git</li>
-          <li>VS Code</li>
-          <li>Firebase</li>
-        </ul>
+      <div class="skill-bar">
+        <span><i class="fab fa-angular"></i> Angular</span>
+        <div class="bar"><div class="progress" style="width: 80%"></div></div>
       </div>
-      <div class="skill-category">
-        <h3>Programming Languages</h3>
-        <ul>
-          <li>Java</li>
-          <li>Python</li>
-          <li>JavaScript</li>
-          <li>SQL</li>
-          <li>Kotlin</li>
-          <li>HTML/CSS</li>
-        </ul>
+      <div class="skill-bar">
+        <span><i class="fab fa-vuejs"></i> Vue.js</span>
+        <div class="bar"><div class="progress" style="width: 75%"></div></div>
       </div>
-      <div class="skill-category">
-        <h3>Additional Skills</h3>
-        <ul>
-          <li>JSON Handling</li>
-          <li>Authentication Systems</li>
-          <li>API Integration</li>
-          <li>Performance Optimization</li>
-        </ul>
+      <div class="skill-bar">
+        <span><i class="fab fa-bootstrap"></i> Bootstrap</span>
+        <div class="bar"><div class="progress" style="width: 75%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fab fa-sass"></i> SASS/SCSS</span>
+        <div class="bar"><div class="progress" style="width: 70%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fab fa-css3-alt"></i> Tailwind CSS</span>
+        <div class="bar"><div class="progress" style="width: 70%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fab fa-node-js"></i> Node.js</span>
+        <div class="bar"><div class="progress" style="width: 85%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fas fa-server"></i> Express.js</span>
+        <div class="bar"><div class="progress" style="width: 80%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fab fa-python"></i> Python</span>
+        <div class="bar"><div class="progress" style="width: 80%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fab fa-java"></i> Java (Spring Boot)</span>
+        <div class="bar"><div class="progress" style="width: 75%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fab fa-php"></i> PHP</span>
+        <div class="bar"><div class="progress" style="width: 70%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fab fa-golang"></i> Go</span>
+        <div class="bar"><div class="progress" style="width: 60%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fab fa-swift"></i> Swift</span>
+        <div class="bar"><div class="progress" style="width: 60%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fab fa-android"></i> Kotlin/Java (Android)</span>
+        <div class="bar"><div class="progress" style="width: 80%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fab fa-react"></i> React Native</span>
+        <div class="bar"><div class="progress" style="width: 70%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fas fa-database"></i> MySQL/PostgreSQL/SQLite</span>
+        <div class="bar"><div class="progress" style="width: 80%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fas fa-database"></i> MongoDB/Redis</span>
+        <div class="bar"><div class="progress" style="width: 75%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fas fa-cloud"></i> Firebase/AWS/Azure/GCP</span>
+        <div class="bar"><div class="progress" style="width: 70%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fab fa-docker"></i> Docker</span>
+        <div class="bar"><div class="progress" style="width: 65%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fas fa-code-branch"></i> Git & GitHub</span>
+        <div class="bar"><div class="progress" style="width: 90%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fas fa-cogs"></i> CI/CD (GitHub Actions, Jenkins)</span>
+        <div class="bar"><div class="progress" style="width: 60%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fas fa-project-diagram"></i> REST APIs, GraphQL, WebSockets</span>
+        <div class="bar"><div class="progress" style="width: 80%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <span><i class="fas fa-vial"></i> Testing (Jest, Mocha, Cypress, Selenium)</span>
+        <div class="bar"><div class="progress" style="width: 65%"></div></div>
       </div>
     </div>
   </section>
@@ -125,81 +183,82 @@
   <section id="projects" class="projects">
     <h2>Featured Projects</h2>
     <div class="projects-grid">
-      <!-- Coffee Website -->
-      <div class="project">
-        <div class="project-content">
-          <h3>Coffee Shop</h3>
-          <p>A modern e-commerce website for a specialty coffee shop with online ordering, subscription service, and blog.</p>
-          <div class="project-tech">
-            <span>React</span>
-            <span>Node.js</span>
-            <span>MongoDB</span>
-            <span>Stripe API</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Relocation Company -->
-      <div class="project">
-        <div class="project-content">
-          <h3>TopBar Relocation Solutions</h3>
-          <p>Comprehensive relocation service platform with quote calculator, inventory management, and client portal.</p>
-          <div class="project-tech">
-            <span>Angular</span>
-            <span>Firebase</span>
-            <span>Google Maps API</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Car Dealership -->
-      <div class="project">
+      <!-- KenyaMotors -->
+      <div class="project-card">
+        <div class="project-image"><img src="kenyamotors.jpg" alt="KenyaMotors"></div>
         <div class="project-content">
           <h3>KenyaMotors</h3>
           <p>Inventory management system for a car dealership with vehicle search, financing calculator, and CRM integration.</p>
           <div class="project-tech">
-            <span>Vue.js</span>
-            <span>PHP</span>
-            <span>MySQL</span>
+            <span><i class="fab fa-vuejs"></i> Vue.js</span>
+            <span><i class="fab fa-php"></i> PHP</span>
+            <span><i class="fas fa-database"></i> MySQL</span>
           </div>
         </div>
       </div>
-
-      <!-- Memory Album -->
-      <div class="project">
-        <div class="project-content">
-          <h3>Grandma Memory Album</h3>
-          <p>An Album to remember my Grandma.</p>
-          <div class="project-tech">
-            <span>Html</span>
-            <span>Css</span>
-            <span>JavaScript</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Music Website -->
-      <div class="project">
+      <!-- Melo Music Streaming -->
+      <div class="project-card">
+        <div class="project-image"><img src="melo-music.jpg" alt="Melo Music Streaming"></div>
         <div class="project-content">
           <h3>Melo Music Streaming</h3>
           <p>Music discovery platform with audio player, playlist creation, and recommendation engine.</p>
           <div class="project-tech">
-            <span>Html</span>
-            <span>Css</span>
-            <span>JavaScript</span>
+            <span><i class="fab fa-html5"></i> Html</span>
+            <span><i class="fab fa-css3-alt"></i> Css</span>
+            <span><i class="fab fa-js"></i> JavaScript</span>
           </div>
         </div>
       </div>
-
+      <!-- Topbar Movers & Relocations -->
+      <div class="project-card">
+        <div class="project-image"><img src="topbar.jpg" alt="Topbar Movers & Relocations"></div>
+        <div class="project-content">
+          <h3>Topbar Movers & Relocations</h3>
+          <p>Comprehensive relocation service platform with quote calculator, inventory management, and client portal.</p>
+          <div class="project-tech">
+            <span><i class="fab fa-angular"></i> Angular</span>
+            <span><i class="fas fa-bolt"></i> Firebase</span>
+            <span><i class="fas fa-map-marker-alt"></i> Google Maps API</span>
+          </div>
+        </div>
+      </div>
+      <!-- Coffee Shop -->
+      <div class="project-card">
+        <div class="project-image"><img src="coffee-shop.jpg" alt="Coffee Shop"></div>
+        <div class="project-content">
+          <h3>Coffee Shop</h3>
+          <p>A modern e-commerce website for a specialty coffee shop with online ordering, subscription service, and blog.</p>
+          <div class="project-tech">
+            <span><i class="fab fa-react"></i> React</span>
+            <span><i class="fab fa-node-js"></i> Node.js</span>
+            <span><i class="fas fa-database"></i> MongoDB</span>
+            <span><i class="fab fa-stripe"></i> Stripe API</span>
+          </div>
+        </div>
+      </div>
       <!-- Mobile Task Manager -->
-      <div class="project">
+      <div class="project-card">
+        <div class="project-image"><img src="mobile-task.jpg" alt="Mobile Task Manager"></div>
         <div class="project-content">
           <h3>Mobile Task Manager</h3>
           <p>An intuitive Android application for task management with offline sync capabilities and clean material design interface.</p>
           <div class="project-tech">
-            <span>Kotlin</span>
-            <span>SQLite</span>
-            <span>Android Studio</span>
+            <span><i class="fas fa-code"></i> Kotlin</span>
+            <span><i class="fas fa-database"></i> SQLite</span>
+            <span><i class="fab fa-android"></i> Android Studio</span>
+          </div>
+        </div>
+      </div>
+      <!-- Grandma Memory Album -->
+      <div class="project-card">
+        <div class="project-image"><img src="album.jpg" alt="Grandma Memory Album"></div>
+        <div class="project-content">
+          <h3>Grandma Memory Album</h3>
+          <p>An Album to remember my Grandma.</p>
+          <div class="project-tech">
+            <span><i class="fab fa-html5"></i> Html</span>
+            <span><i class="fab fa-css3-alt"></i> Css</span>
+            <span><i class="fab fa-js"></i> JavaScript</span>
           </div>
         </div>
       </div>
@@ -218,7 +277,7 @@
     <form action="https://formsubmit.co/gideongeng@gmail.com" method="POST" class="contact-form">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_subject" value="New Portfolio Message!">
-      <input type="hidden" name="_next" value="https://yourwebsite.com/thank-you.html">
+      <input type="hidden" name="_next" value="thank-you.html">
       
       <div class="form-group">
         <input type="text" name="First Name" placeholder="First Name" required>
@@ -242,7 +301,15 @@
   <!-- Footer -->
   <footer class="footer">
     <p>&copy; 2025 Gideon Ngeno. Made with ❤️ and lots of coffee</p>
-    <p>gideongeng@gmail.com</p>
+    <div class="footer-social">
+      <a href="https://wa.me/254720317626" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://www.facebook.com/gideo.cheruiyot.2025" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.instagram.com/gideo.cheruiyot.2025/?hl=en" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://web.telegram.org/a/" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+      <a href="https://github.com/gideongeny" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/gideo-ngeng-120437230/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="mailto:gideongeng@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+    </div>
   </footer>
 
   <script src="script.js"></script>
