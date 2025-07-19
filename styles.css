@@ -485,7 +485,14 @@ body.dark-mode {
     z-index: 1001;
   }
   .navbar-actions {
-    margin-left: 0;
+    margin-left: 1.5rem;
+  }
+  .projects-grid {
+    justify-content: center;
+  }
+  .project-card {
+    margin: 0 auto;
+    max-width: 95vw;
   }
 }
 @media (min-width: 901px) {
@@ -500,6 +507,15 @@ body.dark-mode {
     background: none;
     box-shadow: none;
     padding: 0;
+  }
+}
+@media (max-width: 600px) {
+  .hero {
+    min-height: 60vh;
+    background-position: center top;
+  }
+  .hero::before {
+    background: rgba(30, 40, 60, 0.45);
   }
 }
 
