@@ -7,10 +7,15 @@
   <meta name="google-site-verification" content="AVvitlASIT-WM2B6oZGpysP5QKpgToOp2mrYPDjhtdY" />
   <meta name="google-site-verification" content="AFMGedjZF5SYH7keB9CQ3xm0aVP4cU6mljkExb2r00c" />
   <meta name="description" content="Professional portfolio of Gideon Ngeno, Full-Stack & Mobile Developer" />
+  <meta name="theme-color" content="#1e88e5" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Gideon Portfolio" />
   <title>Gideon Ngeno | Full-Stack & Mobile Developer</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="manifest.json" />
 </head>
 <body>
   <!-- Navigation -->
@@ -24,8 +29,10 @@
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#blog">Blog</a></li>
       <li><a href="#contact">Contact</a></li>
+      <li><button id="lang-toggle" class="lang-toggle" aria-label="Change language"><i class="fas fa-language"></i></button></li>
     </ul>
     <div class="navbar-actions">
       <button id="theme-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
@@ -34,6 +41,12 @@
 
   <!-- Hero Section with Profile Image -->
   <header id="home" class="hero">
+    <div class="hero-background-carousel">
+      <div class="hero-bg-slide active" style="background-image: url('hero-bg.jpg');"></div>
+      <div class="hero-bg-slide" style="background-image: url('profile-main.jpg');"></div>
+      <div class="hero-bg-slide" style="background-image: url('about-bg.jpg');"></div>
+    </div>
+    <div class="hero-overlay"></div>
     <div class="hero-container">
       <div class="hero-content">
         <div class="profile-image-container">
@@ -46,11 +59,16 @@
             <span class="indicator" data-slide="1"></span>
           </div>
         </div>
-        <h1>Hi, I'm <span class="highlight">Gideon Cheruiyot Ngeno</span></h1>
-        <p class="hero-subtitle">Full-Stack & Mobile Developer</p>
-        <p class="hero-text">Passionate about building practical, user-friendly applications for web and mobile platforms. Specialized in Android development and full-stack solutions.</p>
+        <div class="hero-text-container">
+          <h1>Hi, I'm <span class="highlight">Gideon Cheruiyot Ngeno</span></h1>
+          <p class="hero-subtitle">Full-Stack & Mobile Developer</p>
+          <p class="hero-text">Passionate about building practical, user-friendly applications for web and mobile platforms. Specialized in Android development and full-stack solutions.</p>
+        </div>
         <div class="hero-cta">
           <a href="#contact" class="btn secondary">Get In Touch</a>
+          <a href="resume.pdf" download="Gideon_Ngeno_Resume.pdf" class="btn secondary resume-btn" id="resume-download">
+            <i class="fas fa-download"></i> Download Resume
+          </a>
           <div class="social-icons">
             <a href="https://wa.me/254720317626" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
             <a href="https://www.facebook.com/gideo.cheruiyot.2025" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
@@ -73,21 +91,10 @@
         <p>I'm a passionate and driven software developer focused on building practical, user-friendly applications for both web and mobile platforms. With a solid foundation in full-stack development, I bring creativity, technical precision, and real-world problem-solving to every project I work on.</p>
         <p>As an Android developer, I specialize in intuitive and efficient apps using Android Studio, Java, and Kotlin. I integrate APIs, manage data, and ensure responsiveness across devices.</p>
         <p>What drives me is not just technology, but the opportunity to create, solve, and improve. I value collaboration, love innovation, and write clean, meaningful code.</p>
-        
-        <!-- GitHub Stats -->
-        <div class="github-stats" style="margin-top: 2rem;">
-          <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.3rem;">GitHub Activity</h3>
-          <div class="stats-grid">
-            <div class="stat-item">
-              <img id="github-top-langs" src="https://github-readme-stats.vercel.app/api/top-langs/?username=gideongeny&layout=compact&theme=default&hide_border=true" alt="Top Languages" style="width: 100%; max-width: 400px; border-radius: 8px;">
-            </div>
-            <div class="stat-item">
-              <img id="github-stats" src="https://github-readme-stats.vercel.app/api?username=gideongeny&show_icons=true&theme=default&hide_border=true&include_all_commits=true" alt="GitHub Stats" style="width: 100%; max-width: 400px; border-radius: 8px;">
-            </div>
-          </div>
-          <div style="margin-top: 1rem; text-align: center;">
-            <img id="github-streak" src="https://github-readme-streak-stats.demolab.com/?user=gideongeny&theme=default&hide_border=true" alt="GitHub Streak" style="width: 100%; max-width: 400px; border-radius: 8px; margin: 0 auto;">
-          </div>
+        <div style="margin-top: 2rem;">
+          <a href="resume.pdf" download="Gideon_Ngeno_Resume.pdf" class="btn resume-download-btn" id="resume-download-about">
+            <i class="fas fa-file-pdf"></i> Download My Resume
+          </a>
         </div>
       </div>
       <div class="about-image">
@@ -214,6 +221,128 @@
     <div id="github-repos-container" class="projects-grid"></div>
   </section>
 
+  <!-- Testimonials -->
+  <section id="testimonials" class="testimonials-section">
+    <h2>What People Say</h2>
+    <p style="text-align: center; color: var(--text); margin-bottom: 2rem; opacity: 0.8;">Testimonials from clients and colleagues</p>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+          <p class="testimonial-text">Gideon's technical skills are impressive, but what sets him apart is his problem-solving approach and collaborative spirit. He consistently finds innovative solutions to complex challenges.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <img src="birgen.jpg" alt="Birgen" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <span style="display: none;">B</span>
+            </div>
+            <div class="author-info">
+              <h4>Birgen</h4>
+              <p>Tech Lead</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+          <p class="testimonial-text">Gideon is an exceptional developer with a deep understanding of mobile app development. His Android applications are polished, user-friendly, and perform flawlessly. Highly recommended!</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <img src="nicole.jpg" alt="Nicole" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <span style="display: none;">N</span>
+            </div>
+            <div class="author-info">
+              <h4>Nicole</h4>
+              <p>Product Owner</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+          <p class="testimonial-text">I've collaborated with Gideon on multiple projects, and his professionalism and technical excellence never cease to amaze me. He's a true asset to any development team.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <img src="peter.jpg" alt="Peter" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <span style="display: none;">P</span>
+            </div>
+            <div class="author-info">
+              <h4>Peter</h4>
+              <p>Senior Developer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+          <p class="testimonial-text">Working with Gideon was an absolute pleasure. His expertise in full-stack development and attention to detail brought our project to life. He delivered on time and exceeded our expectations.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <img src="zadoc.jpg" alt="Zadoc" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <span style="display: none;">Z</span>
+            </div>
+            <div class="author-info">
+              <h4>Zadoc</h4>
+              <p>Project Manager</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Section -->
+  <section id="blog" class="blog-section">
+    <h2>Latest Blog Posts</h2>
+    <p style="text-align: center; color: var(--text); margin-bottom: 2rem; opacity: 0.8;">Insights, tutorials, and thoughts on software development</p>
+    <div class="blog-grid">
+      <article class="blog-card">
+        <div class="blog-image">
+          <div class="blog-placeholder"><i class="fas fa-code"></i></div>
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span><i class="far fa-calendar"></i> January 15, 2025</span>
+            <span><i class="fas fa-tag"></i> Android Development</span>
+          </div>
+          <h3>Building Modern Android Apps with Kotlin</h3>
+          <p>Explore the best practices and modern patterns for developing robust Android applications using Kotlin. Learn about coroutines, Jetpack Compose, and architectural patterns.</p>
+          <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+      <article class="blog-card">
+        <div class="blog-image">
+          <div class="blog-placeholder"><i class="fas fa-globe"></i></div>
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span><i class="far fa-calendar"></i> January 10, 2025</span>
+            <span><i class="fas fa-tag"></i> Web Development</span>
+          </div>
+          <h3>Full-Stack Development: From Frontend to Backend</h3>
+          <p>A comprehensive guide to building scalable full-stack applications. Covering React, Node.js, database design, and deployment strategies for modern web applications.</p>
+          <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+      <article class="blog-card">
+        <div class="blog-image">
+          <div class="blog-placeholder"><i class="fas fa-mobile-alt"></i></div>
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span><i class="far fa-calendar"></i> January 5, 2025</span>
+            <span><i class="fas fa-tag"></i> Mobile Development</span>
+          </div>
+          <h3>Responsive Design Patterns for Mobile Apps</h3>
+          <p>Discover how to create beautiful and responsive mobile applications that work seamlessly across different screen sizes and devices. Tips and tricks for UI/UX excellence.</p>
+          <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+    </div>
+  </section>
+
   <!-- Future Enhancements / Roadmap -->
   <section id="roadmap" class="roadmap-section">
     <h2>Upcoming Features</h2>
@@ -311,6 +440,21 @@
     </div>
   </footer>
 
+  <script src="translations.js"></script>
   <script src="script.js"></script>
+  <script>
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('SW registered: ', registration);
+          })
+          .catch((registrationError) => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
 </body>
 </html>

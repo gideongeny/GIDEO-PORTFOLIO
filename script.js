@@ -58,23 +58,17 @@ document.addEventListener("DOMContentLoaded", function() {
       document.body.classList.add("dark-mode");
       darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
       localStorage.setItem("theme", "dark");
-      updateGitHubStatsTheme(true);
     } else {
       document.body.classList.remove("dark-mode");
       darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
       localStorage.setItem("theme", "light");
-      updateGitHubStatsTheme(false);
     }
   };
   
   // Check for saved theme preference or use system preference
   const currentTheme = localStorage.getItem("theme") || 
                       (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-  const isDarkMode = currentTheme === "dark";
-  setTheme(isDarkMode);
-  
-  // Update GitHub stats theme on page load
-  setTimeout(() => updateGitHubStatsTheme(isDarkMode), 500);
+  setTheme(currentTheme === "dark");
   
   // Toggle theme on button click
   darkModeToggle.addEventListener("click", () => {
@@ -114,6 +108,27 @@ document.addEventListener("DOMContentLoaded", function() {
       showSlide(currentSlide);
     });
   });
+
+  // === Hero Background Carousel ===
+  let currentBgSlide = 0;
+  const bgSlides = document.querySelectorAll('.hero-bg-slide');
+  const totalBgSlides = bgSlides.length;
+
+  function showBgSlide(index) {
+    bgSlides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  }
+
+  function nextBgSlide() {
+    currentBgSlide = (currentBgSlide + 1) % totalBgSlides;
+    showBgSlide(currentBgSlide);
+  }
+
+  // Auto-advance background carousel every 5 seconds
+  if (bgSlides.length > 1) {
+    setInterval(nextBgSlide, 5000);
+  }
   
   // === Project Image Lazy Loading ===
   const lazyLoadImages = (targets) => {
@@ -216,24 +231,19 @@ document.addEventListener("DOMContentLoaded", function() {
   if (themeToggle) {
     themeToggle.addEventListener('click', () => {
       body.classList.toggle('dark-mode');
-      const isDark = body.classList.contains('dark-mode');
-      if (isDark) {
+      if (body.classList.contains('dark-mode')) {
         localStorage.setItem('theme', 'dark');
         themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        updateGitHubStatsTheme(true);
       } else {
         localStorage.setItem('theme', 'light');
         themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-        updateGitHubStatsTheme(false);
       }
     });
     // Set correct icon on load
     if (body.classList.contains('dark-mode')) {
       themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-      updateGitHubStatsTheme(true);
     } else {
       themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-      updateGitHubStatsTheme(false);
     }
   }
 
@@ -264,41 +274,36 @@ document.addEventListener("DOMContentLoaded", function() {
   window.addEventListener("resize", handleNavToggleDisplay);
   handleNavToggleDisplay();
 
-  // === GitHub Stats Theme Support ===
-  function updateGitHubStatsTheme(isDark) {
-    const theme = isDark ? 'dark' : 'default';
-    const username = 'gideongeny';
-    
-    const topLangsImg = document.getElementById('github-top-langs');
-    const statsImg = document.getElementById('github-stats');
-    const streakImg = document.getElementById('github-streak');
-    
-    if (topLangsImg) {
-      topLangsImg.src = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=${theme}&hide_border=true`;
-    }
-    if (statsImg) {
-      statsImg.src = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=${theme}&hide_border=true&include_all_commits=true`;
-    }
-    if (streakImg) {
-      streakImg.src = `https://github-readme-streak-stats.demolab.com/?user=${username}&theme=${theme}&hide_border=true`;
-    }
-  }
 
   // === GitHub API Integration ===
   async function fetchGitHubRepositories() {
     const username = 'gideongeny';
-    const apiUrl = `https://api.github.com/users/${username}/repos?sort=updated&per_page=100`;
+    let allRepos = [];
+    let page = 1;
+    const perPage = 100;
     
     try {
-      const response = await fetch(apiUrl);
-      if (!response.ok) throw new Error('Failed to fetch repositories');
+      // Fetch all pages of repositories
+      while (true) {
+        const apiUrl = `https://api.github.com/users/${username}/repos?sort=updated&per_page=${perPage}&page=${page}`;
+        const response = await fetch(apiUrl);
+        
+        if (!response.ok) throw new Error('Failed to fetch repositories');
+        
+        const repos = await response.json();
+        
+        if (repos.length === 0) break; // No more repositories
+        
+        allRepos = allRepos.concat(repos);
+        
+        // If we got fewer than perPage, we've reached the end
+        if (repos.length < perPage) break;
+        
+        page++;
+      }
       
-      const repos = await response.json();
-      
-      // Filter out the portfolio repo itself and forks, then get top repos
-      const filteredRepos = repos
-        .filter(repo => !repo.fork && repo.name !== 'GIDEO-PORTFOLIO')
-        .slice(0, 12); // Get top 12 repositories
+      // Filter out the portfolio repo itself and forks
+      const filteredRepos = allRepos.filter(repo => !repo.fork && repo.name !== 'GIDEO-PORTFOLIO');
       
       displayGitHubRepositories(filteredRepos);
     } catch (error) {
@@ -465,4 +470,102 @@ document.addEventListener("DOMContentLoaded", function() {
     
     projectsObserver.observe(projectsSection);
   }
+
+  // === Multi-language Support ===
+  let currentLanguage = localStorage.getItem('language') || 'en';
+  const langToggle = document.getElementById('lang-toggle');
+  const languages = ['en', 'es', 'sw']; // English, Spanish, Swahili
+
+  function updateLanguage(lang) {
+    currentLanguage = lang;
+    localStorage.setItem('language', lang);
+    
+    if (typeof translations === 'undefined') {
+      console.error('Translations not loaded');
+      return;
+    }
+
+    const t = translations[lang];
+    if (!t) return;
+
+    // Update navigation
+    document.querySelectorAll('nav a').forEach((link, index) => {
+      const keys = ['about', 'skills', 'projects', 'testimonials', 'blog', 'contact'];
+      if (keys[index] && t.nav[keys[index]]) {
+        link.textContent = t.nav[keys[index]];
+      }
+    });
+
+    // Update hero section
+    const heroH1 = document.querySelector('.hero h1');
+    if (heroH1 && t.hero.hi) {
+      heroH1.innerHTML = `${t.hero.hi} <span class="highlight">Gideon Cheruiyot Ngeno</span>`;
+    }
+    const heroSubtitle = document.querySelector('.hero-subtitle');
+    if (heroSubtitle && t.hero.subtitle) heroSubtitle.textContent = t.hero.subtitle;
+    const heroText = document.querySelector('.hero-text');
+    if (heroText && t.hero.text) heroText.textContent = t.hero.text;
+    const heroCTA = document.querySelector('.hero-cta .btn');
+    if (heroCTA && t.hero.cta) heroCTA.textContent = t.hero.cta;
+
+    // Update section headings
+    const sections = {
+      'about h2': t.about?.title,
+      'skills h2': t.skills?.title,
+      '#projects h2': t.projects?.title,
+      '#testimonials h2': t.testimonials?.title,
+      '#blog h2': t.blog?.title,
+      '#contact h2': t.contact?.title
+    };
+
+    Object.entries(sections).forEach(([selector, text]) => {
+      const elem = document.querySelector(selector);
+      if (elem && text) elem.textContent = text;
+    });
+
+    // Update contact form
+    const formInputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
+    formInputs.forEach(input => {
+      const placeholder = input.getAttribute('placeholder');
+      if (placeholder && t.contact) {
+        const key = Object.keys(t.contact).find(k => 
+          t.contact[k].toLowerCase() === placeholder.toLowerCase()
+        );
+        if (key) input.setAttribute('placeholder', t.contact[key]);
+      }
+    });
+    const submitBtn = document.querySelector('.contact-form button[type="submit"]');
+    if (submitBtn && t.contact.send) submitBtn.textContent = t.contact.send;
+  }
+
+  // Initialize language
+  updateLanguage(currentLanguage);
+
+  // Language toggle
+  if (langToggle) {
+    langToggle.addEventListener('click', () => {
+      const currentIndex = languages.indexOf(currentLanguage);
+      const nextIndex = (currentIndex + 1) % languages.length;
+      updateLanguage(languages[nextIndex]);
+    });
+  }
+
+  // === Resume Download Handling ===
+  const resumeLinks = document.querySelectorAll('a[href="resume.pdf"]');
+  resumeLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      // Check if resume file exists
+      fetch('resume.pdf', { method: 'HEAD' })
+        .then(response => {
+          if (!response.ok) {
+            e.preventDefault();
+            alert('Resume file not found. Please ensure resume.pdf exists in the root directory.');
+          }
+        })
+        .catch(() => {
+          e.preventDefault();
+          alert('Resume file not found. Please ensure resume.pdf exists in the root directory.');
+        });
+    });
+  });
 });
