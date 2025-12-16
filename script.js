@@ -42,44 +42,53 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
   
+  // === GitHub Stats Theme Update ===
+  window.updateGitHubStatsTheme = function(isDark) {
+    const theme = isDark ? 'dark' : 'default';
+    const username = 'gideongeny';
+    
+    const statsImg = document.getElementById('github-stats-img');
+    const langsImg = document.getElementById('github-langs-img');
+    
+    if (statsImg) {
+      statsImg.src = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=${theme}&hide_border=true&include_all_commits=true&count_private=true`;
+    }
+    if (langsImg) {
+      langsImg.src = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=${theme}&hide_border=true&langs_count=8`;
+    }
+  };
+  
   // === Dark Mode Toggle ===
-  const darkModeToggle = document.createElement("button");
-  darkModeToggle.className = "dark-toggle btn";
-  darkModeToggle.style.position = "fixed";
-  darkModeToggle.style.bottom = "20px";
-  darkModeToggle.style.right = "20px";
-  darkModeToggle.style.zIndex = "1000";
-  darkModeToggle.style.width = "50px";
-  darkModeToggle.style.height = "50px";
-  darkModeToggle.style.borderRadius = "50%";
-  darkModeToggle.style.display = "flex";
-  darkModeToggle.style.alignItems = "center";
-  darkModeToggle.style.justifyContent = "center";
-  darkModeToggle.setAttribute("aria-label", "Toggle dark mode");
-  document.body.appendChild(darkModeToggle);
+  // Use the existing theme-toggle button from navbar
+  const themeToggle = document.getElementById('theme-toggle');
   
   const setTheme = (isDark) => {
     if (isDark) {
       document.body.classList.add("dark-mode");
-      darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
       localStorage.setItem("theme", "dark");
     } else {
       document.body.classList.remove("dark-mode");
-      darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+      if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
       localStorage.setItem("theme", "light");
     }
+    // Update GitHub stats theme
+    updateGitHubStatsTheme(isDark);
   };
   
   // Check for saved theme preference or use system preference
-  const currentTheme = localStorage.getItem("theme") || 
-                      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const savedTheme = localStorage.getItem("theme");
+  const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const currentTheme = savedTheme || (systemPrefersDark ? "dark" : "light");
   setTheme(currentTheme === "dark");
   
   // Toggle theme on button click
-  darkModeToggle.addEventListener("click", () => {
-    const isDark = !document.body.classList.contains("dark-mode");
-    setTheme(isDark);
-  });
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const isDark = !document.body.classList.contains("dark-mode");
+      setTheme(isDark);
+    });
+  }
   
   // === Profile Image Animation ===
   const profileImage = document.querySelector('.profile-image-container');
@@ -182,33 +191,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  // Dark/Light Mode Toggle
-  const themeToggle = document.getElementById('theme-toggle');
-  const body = document.body;
-
-  // Load theme from localStorage
-  if (localStorage.getItem('theme') === 'dark') {
-    body.classList.add('dark-mode');
-  }
-
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      body.classList.toggle('dark-mode');
-      if (body.classList.contains('dark-mode')) {
-        localStorage.setItem('theme', 'dark');
-        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-      } else {
-        localStorage.setItem('theme', 'light');
-        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-      }
-    });
-    // Set correct icon on load
-    if (body.classList.contains('dark-mode')) {
-      themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-    } else {
-      themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-    }
-  }
+  // Dark mode toggle is handled above (removed duplicate code)
 
   // Animate Skill Bars on Scroll
   function animateSkillBars() {
@@ -237,33 +220,7 @@ document.addEventListener("DOMContentLoaded", function() {
   window.addEventListener("resize", handleNavToggleDisplay);
   handleNavToggleDisplay();
 
-  // === GitHub Stats Theme Update ===
-  function updateGitHubStatsTheme(isDark) {
-    const theme = isDark ? 'dark' : 'default';
-    const username = 'gideongeny';
-    
-    const statsImg = document.getElementById('github-stats-img');
-    const langsImg = document.getElementById('github-langs-img');
-    
-    if (statsImg) {
-      statsImg.src = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=${theme}&hide_border=true&include_all_commits=true&count_private=true`;
-    }
-    if (langsImg) {
-      langsImg.src = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=${theme}&hide_border=true&langs_count=8`;
-    }
-  }
-  
-  // Update stats theme on theme change
-  const currentTheme = localStorage.getItem("theme") || 
-                      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-  updateGitHubStatsTheme(currentTheme === "dark");
-  
-  if (darkModeToggle) {
-    darkModeToggle.addEventListener("click", () => {
-      const isDark = !document.body.classList.contains("dark-mode");
-      updateGitHubStatsTheme(isDark);
-    });
-  }
+  // GitHub stats theme is handled above
 
   // === Profile Image Carousel ===
   let currentSlide = 0;
@@ -380,9 +337,17 @@ document.addEventListener("DOMContentLoaded", function() {
         
         page++;
         
-        // Small delay to avoid rate limiting (only if not on last page)
-        if (page <= maxPages) {
-          await new Promise(resolve => setTimeout(resolve, 200));
+        // Reduced delay - display repos immediately, continue fetching in background
+        // Remove delay on first few pages for faster initial load
+        if (page > 2 && page <= maxPages) {
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
+        
+        // Display repos as we fetch them (after first page)
+        if (page > 1 && allRepos.length > 0) {
+          const filteredSoFar = allRepos.filter(repo => repo.name !== 'GIDEO-PORTFOLIO');
+          filteredSoFar.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+          displayGitHubRepositories(filteredSoFar);
         }
       }
       
@@ -576,38 +541,45 @@ document.addEventListener("DOMContentLoaded", function() {
     currentLanguage = lang;
     localStorage.setItem('language', lang);
     
+    // Wait for translations to be loaded
     if (typeof translations === 'undefined') {
-      console.error('Translations not loaded');
+      console.warn('Translations not loaded yet, waiting...');
+      // Retry after a short delay
+      setTimeout(() => updateLanguage(lang), 100);
       return;
     }
 
     const t = translations[lang];
-    if (!t) return;
+    if (!t) {
+      console.error(`Translations not found for language: ${lang}`);
+      return;
+    }
 
-    // Update navigation
-    document.querySelectorAll('nav a').forEach((link, index) => {
-      const keys = ['about', 'skills', 'projects', 'testimonials', 'blog', 'contact'];
-      if (keys[index] && t.nav[keys[index]]) {
+    // Update navigation links (skip the language toggle button)
+    const navLinks = document.querySelectorAll('nav .nav-links a');
+    const keys = ['about', 'skills', 'projects', 'testimonials', 'blog', 'contact'];
+    navLinks.forEach((link, index) => {
+      if (index < keys.length && t.nav && t.nav[keys[index]]) {
         link.textContent = t.nav[keys[index]];
       }
     });
 
     // Update hero section
     const heroH1 = document.querySelector('.hero h1');
-    if (heroH1 && t.hero.hi) {
+    if (heroH1 && t.hero && t.hero.hi) {
       heroH1.innerHTML = `${t.hero.hi} <span class="highlight">Gideon Cheruiyot Ngeno</span>`;
     }
     const heroSubtitle = document.querySelector('.hero-subtitle');
-    if (heroSubtitle && t.hero.subtitle) heroSubtitle.textContent = t.hero.subtitle;
+    if (heroSubtitle && t.hero && t.hero.subtitle) heroSubtitle.textContent = t.hero.subtitle;
     const heroText = document.querySelector('.hero-text');
-    if (heroText && t.hero.text) heroText.textContent = t.hero.text;
+    if (heroText && t.hero && t.hero.text) heroText.textContent = t.hero.text;
     const heroCTA = document.querySelector('.hero-cta .btn');
-    if (heroCTA && t.hero.cta) heroCTA.textContent = t.hero.cta;
+    if (heroCTA && t.hero && t.hero.cta) heroCTA.textContent = t.hero.cta;
 
     // Update section headings
     const sections = {
-      'about h2': t.about?.title,
-      'skills h2': t.skills?.title,
+      '#about h2': t.about?.title,
+      '#skills h2': t.skills?.title,
       '#projects h2': t.projects?.title,
       '#testimonials h2': t.testimonials?.title,
       '#blog h2': t.blog?.title,
@@ -615,31 +587,44 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     Object.entries(sections).forEach(([selector, text]) => {
-      const elem = document.querySelector(selector);
-      if (elem && text) elem.textContent = text;
-    });
-
-    // Update contact form
-    const formInputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
-    formInputs.forEach(input => {
-      const placeholder = input.getAttribute('placeholder');
-      if (placeholder && t.contact) {
-        const key = Object.keys(t.contact).find(k => 
-          t.contact[k].toLowerCase() === placeholder.toLowerCase()
-        );
-        if (key) input.setAttribute('placeholder', t.contact[key]);
+      if (text) {
+        const elem = document.querySelector(selector);
+        if (elem) elem.textContent = text;
       }
     });
+
+    // Update contact form placeholders
+    if (t.contact) {
+      const firstNameInput = document.querySelector('input[name="firstName"], input[placeholder*="First"]');
+      if (firstNameInput && t.contact.firstName) firstNameInput.setAttribute('placeholder', t.contact.firstName);
+      
+      const lastNameInput = document.querySelector('input[name="lastName"], input[placeholder*="Last"]');
+      if (lastNameInput && t.contact.lastName) lastNameInput.setAttribute('placeholder', t.contact.lastName);
+      
+      const emailInput = document.querySelector('input[type="email"]');
+      if (emailInput && t.contact.email) emailInput.setAttribute('placeholder', t.contact.email);
+      
+      const subjectInput = document.querySelector('input[name="subject"], input[placeholder*="Subject"]');
+      if (subjectInput && t.contact.subject) subjectInput.setAttribute('placeholder', t.contact.subject);
+      
+      const messageInput = document.querySelector('textarea[name="message"]');
+      if (messageInput && t.contact.message) messageInput.setAttribute('placeholder', t.contact.message);
+    }
+    
     const submitBtn = document.querySelector('.contact-form button[type="submit"]');
-    if (submitBtn && t.contact.send) submitBtn.textContent = t.contact.send;
+    if (submitBtn && t.contact && t.contact.send) submitBtn.textContent = t.contact.send;
   }
 
-  // Initialize language
-  updateLanguage(currentLanguage);
+  // Initialize language after a short delay to ensure translations.js is loaded
+  setTimeout(() => {
+    updateLanguage(currentLanguage);
+  }, 100);
 
   // Language toggle
   if (langToggle) {
-    langToggle.addEventListener('click', () => {
+    langToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       const currentIndex = languages.indexOf(currentLanguage);
       const nextIndex = (currentIndex + 1) % languages.length;
       updateLanguage(languages[nextIndex]);
