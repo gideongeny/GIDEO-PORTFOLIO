@@ -482,29 +482,22 @@ document.addEventListener("DOMContentLoaded", function() {
       ];
       
       // Try to get actual website screenshot if homepage exists
+      // Use multiple approaches to get the best image
       let imageSrc = null;
+      const fallbackImageUrl = `https://opengraph.githubassets.com/1/gideongeny/${repo.name}`;
+      
       if (homepageUrl && homepageUrl.startsWith('http')) {
-        // Try multiple screenshot services for actual website images
-        // Option 1: Use screenshot.tech (may require API key, but works with CORS)
-        // Option 2: Use imagekit.io screenshot service
-        // Option 3: Try to get og:image from the website
-        
-        // For now, use a simple approach: try screenshot API
-        // Note: These services may require API keys for production use
-        // Using a proxy-free screenshot service
-        imageSrc = `https://api.screenshotone.com/take?access_key=demo&url=${encodeURIComponent(homepageUrl)}&viewport_width=1280&viewport_height=720&device_scale_factor=1&format=png&image_quality=80`;
-        
-        // If screenshot service doesn't work, fall back to opengraph
-        // We'll handle this in the onerror handler
+        // Try to get actual website screenshot
+        // Using screenshotone.com with demo key (for testing)
+        // In production, you may want to use your own API key
+        // Alternative: Use imagekit.io or other screenshot services
+        imageSrc = `https://api.screenshotone.com/take?access_key=demo&url=${encodeURIComponent(homepageUrl)}&viewport_width=1280&viewport_height=720&device_scale_factor=1&format=png&image_quality=80&block_ads=true&block_cookie_banners=true&block_banners_by_heuristics=true&block_trackers=true&delay=2&timeout=10`;
       }
       
       // Fallback to GitHub's opengraph API if no homepage
       if (!imageSrc) {
-        imageSrc = `https://opengraph.githubassets.com/1/gideongeny/${repo.name}`;
+        imageSrc = fallbackImageUrl;
       }
-      
-      // Store the fallback URL for error handling
-      const fallbackImageUrl = `https://opengraph.githubassets.com/1/gideongeny/${repo.name}`;
       
       return `
         <div class="project-card github-repo-card">
