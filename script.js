@@ -53,6 +53,22 @@ document.addEventListener("DOMContentLoaded", function() {
   darkModeToggle.setAttribute("aria-label", "Toggle dark mode");
   document.body.appendChild(darkModeToggle);
   
+  // === GitHub Stats Theme Update ===
+  function updateGitHubStatsTheme(isDark) {
+    const theme = isDark ? 'dark' : 'default';
+    const username = 'gideongeny';
+    
+    const statsImg = document.getElementById('github-stats-img');
+    const langsImg = document.getElementById('github-langs-img');
+    
+    if (statsImg) {
+      statsImg.src = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=${theme}&hide_border=true&include_all_commits=true&count_private=true`;
+    }
+    if (langsImg) {
+      langsImg.src = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=${theme}&hide_border=true&langs_count=8`;
+    }
+  }
+  
   const setTheme = (isDark) => {
     if (isDark) {
       document.body.classList.add("dark-mode");
@@ -63,6 +79,8 @@ document.addEventListener("DOMContentLoaded", function() {
       darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
       localStorage.setItem("theme", "light");
     }
+    // Update GitHub stats theme
+    updateGitHubStatsTheme(isDark);
   };
   
   // Check for saved theme preference or use system preference

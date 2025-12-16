@@ -88,8 +88,18 @@
         <p>I'm a passionate and driven software developer focused on building practical, user-friendly applications for both web and mobile platforms. With a solid foundation in full-stack development, I bring creativity, technical precision, and real-world problem-solving to every project I work on.</p>
         <p>As an Android developer, I specialize in intuitive and efficient apps using Android Studio, Java, and Kotlin. I integrate APIs, manage data, and ensure responsiveness across devices.</p>
         <p>What drives me is not just technology, but the opportunity to create, solve, and improve. I value collaboration, love innovation, and write clean, meaningful code.</p>
+        
+        <!-- GitHub Stats Widget -->
+        <div class="github-stats-widget" style="margin-top: 2rem;">
+          <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.3rem;">GitHub Activity</h3>
+          <div class="github-stats-container">
+            <img src="https://github-readme-stats.vercel.app/api?username=gideongeny&show_icons=true&theme=default&hide_border=true&include_all_commits=true&count_private=true" alt="GitHub Stats" id="github-stats-img" style="width: 100%; max-width: 400px; border-radius: 8px;">
+            <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=gideongeny&layout=compact&theme=default&hide_border=true&langs_count=8" alt="Top Languages" id="github-langs-img" style="width: 100%; max-width: 400px; border-radius: 8px;">
+          </div>
+        </div>
+        
         <div style="margin-top: 2rem;">
-          <a href="resume.pdf" download="Gideon_Ngeno_Resume.pdf" class="btn resume-download-btn" id="resume-download-about">
+          <a href="#" class="btn resume-download-btn" id="resume-download-about" onclick="event.preventDefault(); downloadResume(event);">
             <i class="fas fa-file-pdf"></i> Download My Resume
           </a>
         </div>
