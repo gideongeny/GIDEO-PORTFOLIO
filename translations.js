@@ -2,12 +2,13 @@
 const translations = {
   en: {
     nav: {
-      about: "About",
-      skills: "Skills",
-      projects: "Projects",
-      testimonials: "Testimonials",
+      about: "About Me",
+      skills: "Technical Skills",
+      projects: "My GitHub Repositories",
+      testimonials: "What People Say",
       blog: "Blog",
-      contact: "Contact"
+      contact: "Get In Touch",
+      fullstack: "FullStack"
     },
     hero: {
       hi: "Hi, I'm",
@@ -34,7 +35,7 @@ const translations = {
       subtitle: "Testimonials from clients and colleagues"
     },
     blog: {
-      title: "Latest Blog Posts",
+      title: "FullStack Posts",
       subtitle: "Insights, tutorials, and thoughts on software development",
       readMore: "Read More"
     },
@@ -86,7 +87,7 @@ const translations = {
       subtitle: "Testimonios de clientes y colegas"
     },
     blog: {
-      title: "Últimas Entradas del Blog",
+      title: "Publicaciones FullStack",
       subtitle: "Ideas, tutoriales y reflexiones sobre desarrollo de software",
       readMore: "Leer Más"
     },
@@ -138,7 +139,7 @@ const translations = {
       subtitle: "Ushuhuda kutoka kwa wateja na wafanyakazi"
     },
     blog: {
-      title: "Makala Za Hivi Karibuni za Blogu",
+      title: "Machapisho FullStack",
       subtitle: "Mawazo, mafunzo, na fikra kuhusu ukuzaji wa programu",
       readMore: "Soma Zaidi"
     },

@@ -641,6 +641,10 @@ body.dark-mode #github-langs-img {
   height: 100%;
   object-fit: cover;
   display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 .repo-image-container .repo-placeholder {
   display: flex;

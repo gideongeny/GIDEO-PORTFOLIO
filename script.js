@@ -481,14 +481,19 @@ document.addEventListener("DOMContentLoaded", function() {
         `images/${repo.name.toLowerCase()}.png`
       ];
       
-      // Generate social preview image URL as fallback
+      // Try to get repository preview image
+      // GitHub's opengraph API for social previews
       const socialPreviewUrl = `https://opengraph.githubassets.com/1/gideongeny/${repo.name}`;
+      
+      // Alternative: Try repository's default branch README or screenshot
+      // For now, we'll use the social preview URL which should work for most repos
+      const imageSrc = socialPreviewUrl;
       
       return `
         <div class="project-card github-repo-card">
-          <div class="repo-image-container" style="background: ${gradient};">
-            <img src="${socialPreviewUrl}" alt="${repo.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="width: 100%; height: 100%; object-fit: cover;">
-            <div class="repo-placeholder" style="display: none;"><i class="fas fa-code"></i></div>
+          <div class="repo-image-container" style="background: ${gradient}; position: relative; overflow: hidden;">
+            <img src="${imageSrc}" alt="${repo.name}" loading="lazy" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.onerror=null; this.style.display='none'; const placeholder = this.nextElementSibling; if(placeholder) placeholder.style.display='flex';" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">
+            <div class="repo-placeholder" style="display: none; align-items: center; justify-content: center; height: 100%; width: 100%; position: absolute; top: 0; left: 0; z-index: 2; background: ${gradient};"><i class="fas fa-code" style="font-size: 3rem; opacity: 0.8; color: #fff;"></i></div>
           </div>
           <div class="project-content">
             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
@@ -620,6 +625,15 @@ document.addEventListener("DOMContentLoaded", function() {
       '#blog h2': t.blog?.title,
       '#contact h2': t.contact?.title
     };
+    
+    // Update nav link for contact/fullstack
+    const contactNavLink = document.querySelector('nav .nav-links a[href="#contact"]');
+    if (contactNavLink && t.nav && t.nav.fullstack) {
+      contactNavLink.textContent = t.nav.fullstack;
+    } else if (contactNavLink && t.hero && t.hero.cta) {
+      // Fallback to CTA text if fullstack not available
+      contactNavLink.textContent = t.hero.cta;
+    }
 
     Object.entries(sections).forEach(([selector, text]) => {
       if (text) {
@@ -704,6 +718,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
               }
               
+              // Make sure percentage is visible from the start
+              const percentSpan = progressBar.querySelector('.progress-percentage');
+              if (percentSpan) {
+                percentSpan.style.opacity = '1';
+                percentSpan.style.visibility = 'visible';
+                percentSpan.style.display = 'block';
+              }
+              
               // Set initial width to 0, then animate to target
               progressBar.style.width = '0%';
               progressBar.style.transition = 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -714,12 +736,6 @@ document.addEventListener("DOMContentLoaded", function() {
               // Animate to target width
               setTimeout(() => {
                 progressBar.style.width = targetWidth;
-                
-                // Ensure percentage text is visible
-                const percentSpan = progressBar.querySelector('.progress-percentage');
-                if (percentSpan) {
-                  percentSpan.style.opacity = '1';
-                }
               }, 50);
             }
           }, index * 80);
@@ -732,12 +748,14 @@ document.addEventListener("DOMContentLoaded", function() {
       bar.style.opacity = '0';
       bar.style.transform = 'translateY(30px)';
       
-      // Hide percentage initially
+      // Make sure percentage is visible from the start
       const progressBar = bar.querySelector('.progress');
       if (progressBar) {
         const percentSpan = progressBar.querySelector('.progress-percentage');
         if (percentSpan) {
-          percentSpan.style.opacity = '0';
+          percentSpan.style.opacity = '1';
+          percentSpan.style.visibility = 'visible';
+          percentSpan.style.display = 'block';
         }
       }
       
