@@ -203,19 +203,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Dark mode toggle is handled above (removed duplicate code)
 
-  // Animate Skill Bars on Scroll
-  function animateSkillBars() {
-    const skillBars = document.querySelectorAll('.skill-bar .progress');
-    skillBars.forEach(bar => {
-      const rect = bar.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 60) {
-        bar.style.transition = 'width 1.2s cubic-bezier(.4,2,.6,1)';
-        bar.style.width = bar.getAttribute('style').match(/width: (\d+%)/)[1];
-      }
-    });
-  }
-  window.addEventListener('scroll', animateSkillBars);
-  window.addEventListener('DOMContentLoaded', animateSkillBars);
+  // Removed duplicate skill bar animation - handled below with IntersectionObserver
 
   // Hide navToggle (hamburger) on desktop
   function handleNavToggleDisplay() {
@@ -484,10 +472,23 @@ document.addEventListener("DOMContentLoaded", function() {
       const homepageUrl = getRepositoryHomepage(repo);
       const gradient = getGradientFromString(repo.name);
       
+      // Try to get project image - check if there's a matching image file
+      // Try common image locations: repo name matches existing images
+      const repoImageSources = [
+        `${repo.name.toLowerCase()}.jpg`,
+        `${repo.name.toLowerCase()}.png`,
+        `images/${repo.name.toLowerCase()}.jpg`,
+        `images/${repo.name.toLowerCase()}.png`
+      ];
+      
+      // Generate social preview image URL as fallback
+      const socialPreviewUrl = `https://opengraph.githubassets.com/1/gideongeny/${repo.name}`;
+      
       return `
         <div class="project-card github-repo-card">
           <div class="repo-image-container" style="background: ${gradient};">
-            <div class="repo-placeholder"><i class="fas fa-code"></i></div>
+            <img src="${socialPreviewUrl}" alt="${repo.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="width: 100%; height: 100%; object-fit: cover;">
+            <div class="repo-placeholder" style="display: none;"><i class="fas fa-code"></i></div>
           </div>
           <div class="project-content">
             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
@@ -676,8 +677,8 @@ document.addEventListener("DOMContentLoaded", function() {
   function animateSkillBars() {
     const skillBars = document.querySelectorAll('.skill-bar');
     const observerOptions = {
-      threshold: 0.3,
-      rootMargin: '0px 0px -100px 0px'
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
     };
     
     const observer = new IntersectionObserver((entries) => {
@@ -689,13 +690,39 @@ document.addEventListener("DOMContentLoaded", function() {
             
             const progressBar = entry.target.querySelector('.progress');
             if (progressBar) {
-              const width = progressBar.style.width;
+              // Get the target width from data-percent or style attribute
+              const dataPercent = progressBar.getAttribute('data-percent');
+              const styleWidth = progressBar.getAttribute('style');
+              let targetWidth = '0%';
+              
+              if (dataPercent) {
+                targetWidth = dataPercent;
+              } else if (styleWidth) {
+                const match = styleWidth.match(/width:\s*(\d+%)/);
+                if (match) {
+                  targetWidth = match[1];
+                }
+              }
+              
+              // Set initial width to 0, then animate to target
               progressBar.style.width = '0%';
+              progressBar.style.transition = 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
+              
+              // Force reflow
+              void progressBar.offsetWidth;
+              
+              // Animate to target width
               setTimeout(() => {
-                progressBar.style.width = width;
-              }, 100);
+                progressBar.style.width = targetWidth;
+                
+                // Ensure percentage text is visible
+                const percentSpan = progressBar.querySelector('.progress-percentage');
+                if (percentSpan) {
+                  percentSpan.style.opacity = '1';
+                }
+              }, 50);
             }
-          }, index * 100);
+          }, index * 80);
           observer.unobserve(entry.target);
         }
       });
@@ -704,6 +731,16 @@ document.addEventListener("DOMContentLoaded", function() {
     skillBars.forEach((bar, index) => {
       bar.style.opacity = '0';
       bar.style.transform = 'translateY(30px)';
+      
+      // Hide percentage initially
+      const progressBar = bar.querySelector('.progress');
+      if (progressBar) {
+        const percentSpan = progressBar.querySelector('.progress-percentage');
+        if (percentSpan) {
+          percentSpan.style.opacity = '0';
+        }
+      }
+      
       observer.observe(bar);
     });
   }
