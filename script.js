@@ -249,17 +249,54 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Animate Skill Bars on Scroll
   function animateSkillBars() {
-    const skillBars = document.querySelectorAll('.skill-bar .progress');
-    skillBars.forEach(bar => {
-      const rect = bar.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 60) {
-        bar.style.transition = 'width 1.2s cubic-bezier(.4,2,.6,1)';
-        bar.style.width = bar.getAttribute('style').match(/width: (\d+%)/)[1];
-      }
+    const skillBars = document.querySelectorAll('.skill-bar');
+    const observerOptions = {
+      threshold: 0.3,
+      rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            
+            const progressBar = entry.target.querySelector('.progress');
+            if (progressBar) {
+              const width = progressBar.style.width;
+              progressBar.style.width = '0%';
+              setTimeout(() => {
+                progressBar.style.width = width;
+              }, 100);
+            }
+          }, index * 100);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    
+    skillBars.forEach((bar, index) => {
+      bar.style.opacity = '0';
+      bar.style.transform = 'translateY(30px)';
+      observer.observe(bar);
     });
   }
-  window.addEventListener('scroll', animateSkillBars);
-  window.addEventListener('DOMContentLoaded', animateSkillBars);
+  
+  // Initialize animation when skills section loads
+  const skillsSection = document.getElementById('skills');
+  if (skillsSection) {
+    const skillsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateSkillBars();
+          skillsObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    skillsObserver.observe(skillsSection);
+  }
 
   // Hide navToggle (hamburger) on desktop
   function handleNavToggleDisplay() {
@@ -304,6 +341,8 @@ document.addEventListener("DOMContentLoaded", function() {
       
       // Filter out the portfolio repo itself and forks
       const filteredRepos = allRepos.filter(repo => !repo.fork && repo.name !== 'GIDEO-PORTFOLIO');
+      
+      console.log(`Fetched ${allRepos.length} total repos, showing ${filteredRepos.length} after filtering`);
       
       displayGitHubRepositories(filteredRepos);
     } catch (error) {
@@ -551,21 +590,25 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // === Resume Download Handling ===
-  const resumeLinks = document.querySelectorAll('a[href="resume.pdf"]');
-  resumeLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      // Check if resume file exists
-      fetch('resume.pdf', { method: 'HEAD' })
-        .then(response => {
-          if (!response.ok) {
-            e.preventDefault();
-            alert('Resume file not found. Please ensure resume.pdf exists in the root directory.');
-          }
-        })
-        .catch(() => {
-          e.preventDefault();
-          alert('Resume file not found. Please ensure resume.pdf exists in the root directory.');
-        });
-    });
-  });
+  window.downloadResume = function(e) {
+    e.preventDefault();
+    const resumeUrl = 'resume.pdf';
+    
+    fetch(resumeUrl, { method: 'HEAD' })
+      .then(response => {
+        if (response.ok) {
+          const link = document.createElement('a');
+          link.href = resumeUrl;
+          link.download = 'Gideon_Ngeno_Resume.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          alert('Resume file not found. Please contact me at gideongeng@gmail.com for my resume.');
+        }
+      })
+      .catch(() => {
+        alert('Resume file not found. Please contact me at gideongeng@gmail.com for my resume.');
+      });
+  };
 });
