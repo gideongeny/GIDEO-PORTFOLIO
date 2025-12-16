@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const themeToggle = document.getElementById('theme-toggle');
   
   const setTheme = (isDark) => {
+    console.log('Setting theme:', isDark ? 'dark' : 'light');
     if (isDark) {
       document.body.classList.add("dark-mode");
       if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
@@ -73,7 +74,9 @@ document.addEventListener("DOMContentLoaded", function() {
       localStorage.setItem("theme", "light");
     }
     // Update GitHub stats theme
-    updateGitHubStatsTheme(isDark);
+    if (typeof updateGitHubStatsTheme === 'function') {
+      updateGitHubStatsTheme(isDark);
+    }
   };
   
   // Check for saved theme preference or use system preference
@@ -84,10 +87,17 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Toggle theme on button click
   if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
+    console.log('Dark mode toggle button found, adding event listener');
+    themeToggle.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('Theme toggle clicked');
       const isDark = !document.body.classList.contains("dark-mode");
       setTheme(isDark);
+      return false;
     });
+  } else {
+    console.error('Theme toggle button not found!');
   }
   
   // === Profile Image Animation ===
@@ -301,7 +311,14 @@ document.addEventListener("DOMContentLoaded", function() {
       while (page <= maxPages) {
         console.log(`Fetching page ${page}...`);
         const apiUrl = `https://api.github.com/users/${username}/repos?sort=updated&per_page=${perPage}&page=${page}&type=all`;
-        const response = await fetch(apiUrl);
+        
+        let response;
+        try {
+          response = await fetch(apiUrl);
+        } catch (fetchError) {
+          console.error('Network error:', fetchError);
+          throw new Error(`Network error: ${fetchError.message}`);
+        }
         
         if (!response.ok) {
           const errorText = await response.text();
@@ -324,9 +341,16 @@ document.addEventListener("DOMContentLoaded", function() {
           loading.innerHTML = `
             <div style="text-align: center; padding: 2rem; color: var(--text);">
               <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-              <p>Loading repositories... (Found ${allRepos.length} so far, fetching page ${page + 1}...)</p>
+              <p>Loading repositories... (Found ${allRepos.length} so far${page < maxPages ? `, checking page ${page + 1}...` : ''})</p>
             </div>
           `;
+        }
+        
+        // Display repos as we fetch them (show first page immediately, then update as more come)
+        if (allRepos.length > 0) {
+          const filteredSoFar = allRepos.filter(repo => repo.name !== 'GIDEO-PORTFOLIO');
+          filteredSoFar.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+          displayGitHubRepositories(filteredSoFar);
         }
         
         // If we got fewer than perPage, we've reached the end
@@ -337,17 +361,9 @@ document.addEventListener("DOMContentLoaded", function() {
         
         page++;
         
-        // Reduced delay - display repos immediately, continue fetching in background
-        // Remove delay on first few pages for faster initial load
-        if (page > 2 && page <= maxPages) {
-          await new Promise(resolve => setTimeout(resolve, 50));
-        }
-        
-        // Display repos as we fetch them (after first page)
-        if (page > 1 && allRepos.length > 0) {
-          const filteredSoFar = allRepos.filter(repo => repo.name !== 'GIDEO-PORTFOLIO');
-          filteredSoFar.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-          displayGitHubRepositories(filteredSoFar);
+        // Small delay to avoid rate limiting (only if not on last page)
+        if (page <= maxPages && repos.length >= perPage) {
+          await new Promise(resolve => setTimeout(resolve, 100));
         }
       }
       
@@ -505,9 +521,27 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Fetch GitHub repositories immediately on page load
   console.log('Page loaded, starting to fetch GitHub repositories...');
-  fetchGitHubRepositories().catch(error => {
-    console.error('Failed to fetch repositories:', error);
-  });
+  // Use setTimeout to ensure DOM is fully ready
+  setTimeout(() => {
+    try {
+      fetchGitHubRepositories().catch(error => {
+        console.error('Failed to fetch repositories:', error);
+        const loading = document.getElementById('github-repos-loading');
+        if (loading) {
+          loading.innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: var(--text);">
+              <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem; color: var(--secondary);"></i>
+              <p>Error loading repositories. Please check console for details.</p>
+              <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem;">${error.message || 'Unknown error'}</p>
+              <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer;">Retry</button>
+            </div>
+          `;
+        }
+      });
+    } catch (error) {
+      console.error('Error calling fetchGitHubRepositories:', error);
+    }
+  }, 100);
 
   // === Resume Download Handling ===
   window.downloadResume = function(e) {
@@ -622,13 +656,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Language toggle
   if (langToggle) {
-    langToggle.addEventListener('click', (e) => {
+    console.log('Language toggle button found, adding event listener');
+    langToggle.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
+      console.log('Language toggle clicked, current language:', currentLanguage);
       const currentIndex = languages.indexOf(currentLanguage);
       const nextIndex = (currentIndex + 1) % languages.length;
-      updateLanguage(languages[nextIndex]);
+      const nextLang = languages[nextIndex];
+      console.log('Switching to language:', nextLang);
+      updateLanguage(nextLang);
+      return false;
     });
+  } else {
+    console.error('Language toggle button not found!');
   }
 
   // === Animate Skill Bars on Scroll ===
