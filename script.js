@@ -481,18 +481,35 @@ document.addEventListener("DOMContentLoaded", function() {
         `images/${repo.name.toLowerCase()}.png`
       ];
       
-      // Try to get repository preview image
-      // GitHub's opengraph API for social previews
-      const socialPreviewUrl = `https://opengraph.githubassets.com/1/gideongeny/${repo.name}`;
+      // Try to get actual website screenshot if homepage exists
+      let imageSrc = null;
+      if (homepageUrl && homepageUrl.startsWith('http')) {
+        // Try multiple screenshot services for actual website images
+        // Option 1: Use screenshot.tech (may require API key, but works with CORS)
+        // Option 2: Use imagekit.io screenshot service
+        // Option 3: Try to get og:image from the website
+        
+        // For now, use a simple approach: try screenshot API
+        // Note: These services may require API keys for production use
+        // Using a proxy-free screenshot service
+        imageSrc = `https://api.screenshotone.com/take?access_key=demo&url=${encodeURIComponent(homepageUrl)}&viewport_width=1280&viewport_height=720&device_scale_factor=1&format=png&image_quality=80`;
+        
+        // If screenshot service doesn't work, fall back to opengraph
+        // We'll handle this in the onerror handler
+      }
       
-      // Alternative: Try repository's default branch README or screenshot
-      // For now, we'll use the social preview URL which should work for most repos
-      const imageSrc = socialPreviewUrl;
+      // Fallback to GitHub's opengraph API if no homepage
+      if (!imageSrc) {
+        imageSrc = `https://opengraph.githubassets.com/1/gideongeny/${repo.name}`;
+      }
+      
+      // Store the fallback URL for error handling
+      const fallbackImageUrl = `https://opengraph.githubassets.com/1/gideongeny/${repo.name}`;
       
       return `
         <div class="project-card github-repo-card">
           <div class="repo-image-container" style="background: ${gradient}; position: relative; overflow: hidden;">
-            <img src="${imageSrc}" alt="${repo.name}" loading="lazy" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.onerror=null; this.style.display='none'; const placeholder = this.nextElementSibling; if(placeholder) placeholder.style.display='flex';" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">
+            <img src="${imageSrc}" alt="${repo.name}" loading="lazy" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="const self = this; let attempt = self.dataset.attempt || 0; attempt++; self.dataset.attempt = attempt; if(attempt === 1 && self.src.includes('screenshotone.com')) { self.src = '${fallbackImageUrl}'; return; } this.onerror=null; this.style.display='none'; const placeholder = this.nextElementSibling; if(placeholder) placeholder.style.display='flex';" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">
             <div class="repo-placeholder" style="display: none; align-items: center; justify-content: center; height: 100%; width: 100%; position: absolute; top: 0; left: 0; z-index: 2; background: ${gradient};"><i class="fas fa-code" style="font-size: 3rem; opacity: 0.8; color: #fff;"></i></div>
           </div>
           <div class="project-content">
