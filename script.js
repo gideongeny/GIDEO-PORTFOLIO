@@ -82,17 +82,38 @@ document.addEventListener("DOMContentLoaded", function() {
     setTheme(isDark);
   });
   
-  // === Profile Image Animation ===
-  const profileImage = document.querySelector('.profile-image-container');
-  if (profileImage) {
-    profileImage.addEventListener('mouseenter', () => {
-      profileImage.style.transform = 'scale(1.05)';
+  // === Profile Image Carousel ===
+  let currentSlide = 0;
+  const profileImages = document.querySelectorAll('.profile-image.main-profile');
+  const indicators = document.querySelectorAll('.carousel-indicators .indicator');
+  const totalSlides = profileImages.length;
+
+  function showSlide(index) {
+    profileImages.forEach((img, i) => {
+      img.classList.toggle('active', i === index);
     });
-    
-    profileImage.addEventListener('mouseleave', () => {
-      profileImage.style.transform = 'scale(1)';
+    indicators.forEach((ind, i) => {
+      ind.classList.toggle('active', i === index);
     });
   }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    showSlide(currentSlide);
+  }
+
+  // Auto-advance carousel every 4 seconds
+  if (profileImages.length > 1) {
+    setInterval(nextSlide, 4000);
+  }
+
+  // Allow manual navigation via indicators
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => {
+      currentSlide = index;
+      showSlide(currentSlide);
+    });
+  });
   
   // === Project Image Lazy Loading ===
   const lazyLoadImages = (targets) => {
@@ -312,6 +333,59 @@ document.addEventListener("DOMContentLoaded", function() {
     return icons[language] || 'fas fa-code';
   }
 
+  function getRepositoryImage(repo) {
+    // Try to get screenshot from homepage URL or GitHub Pages
+    const homepage = repo.homepage;
+    const repoName = repo.name;
+    const username = 'gideongeny';
+    
+    // If homepage exists and is a valid URL, use screenshot service
+    if (homepage && homepage.startsWith('http')) {
+      return `https://image.thum.io/get/width/640/crop/400/${homepage}`;
+    }
+    
+    // Try GitHub Pages URL pattern
+    const ghPagesUrl = `https://${username}.github.io/${repoName}/`;
+    // Return a placeholder or try to generate from repo name
+    // Using a gradient placeholder based on repo name hash
+    return null; // Will use placeholder instead
+  }
+
+  function getRepositoryHomepage(repo) {
+    // Return homepage if it exists, otherwise try GitHub Pages
+    if (repo.homepage && repo.homepage.startsWith('http')) {
+      return repo.homepage;
+    }
+    
+    // Check if GitHub Pages might be enabled (common patterns)
+    const repoName = repo.name;
+    const username = 'gideongeny';
+    const ghPagesUrl = `https://${username}.github.io/${repoName}/`;
+    
+    // Return GitHub Pages URL as potential homepage
+    return ghPagesUrl;
+  }
+
+  function getGradientFromString(str) {
+    // Generate a consistent gradient color based on repository name
+    const colors = [
+      'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+      'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+      'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
+      'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+      'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)'
+    ];
+    
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return colors[Math.abs(hash) % colors.length];
+  }
+
   function displayGitHubRepositories(repos) {
     const container = document.getElementById('github-repos-container');
     const loading = document.getElementById('github-repos-loading');
@@ -335,8 +409,18 @@ document.addEventListener("DOMContentLoaded", function() {
         day: 'numeric' 
       });
       
+      const homepageUrl = getRepositoryHomepage(repo);
+      const repoImage = getRepositoryImage(repo);
+      const gradient = getGradientFromString(repo.name);
+      
       return `
         <div class="project-card github-repo-card">
+          <div class="repo-image-container" style="background: ${gradient};">
+            ${repoImage ? 
+              `<img src="${repoImage}" alt="${repo.name}" onerror="this.parentElement.innerHTML='<div class=\\'repo-placeholder\\'><i class=\\'fas fa-code\\'></i></div>'">` :
+              `<div class="repo-placeholder"><i class="fas fa-code"></i></div>`
+            }
+          </div>
           <div class="project-content">
             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
               <h3><a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none;">${repo.name}</a></h3>
@@ -348,11 +432,18 @@ document.addEventListener("DOMContentLoaded", function() {
               ${repo.stargazers_count > 0 ? `<span><i class="fas fa-star"></i> ${repo.stargazers_count}</span>` : ''}
               ${repo.forks_count > 0 ? `<span><i class="fas fa-code-branch"></i> ${repo.forks_count}</span>` : ''}
             </div>
+            <div class="repo-links">
+              <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="repo-link-btn">
+                <i class="fab fa-github"></i> Code
+              </a>
+              ${homepageUrl ? `
+                <a href="${homepageUrl}" target="_blank" rel="noopener noreferrer" class="repo-link-btn secondary">
+                  <i class="fas fa-globe"></i> Live Demo
+                </a>
+              ` : ''}
+            </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text); opacity: 0.7;">
               <span><i class="far fa-calendar"></i> Updated ${updatedDate}</span>
-              <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="project-link" style="margin-top: 0;">
-                View <i class="fas fa-external-link-alt"></i>
-              </a>
             </div>
           </div>
         </div>

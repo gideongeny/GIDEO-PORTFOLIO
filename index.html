@@ -24,7 +24,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="navbar-actions">
@@ -37,7 +37,14 @@
     <div class="hero-container">
       <div class="hero-content">
         <div class="profile-image-container">
-          <img src="profile-main.jpg" alt="Gideon Ngeno" class="profile-image main-profile">
+          <div class="profile-carousel">
+            <img src="profile-main.jpg" alt="Gideon Ngeno" class="profile-image main-profile active">
+            <img src="about-bg.jpg" alt="Gideon Ngeno in Nairobi" class="profile-image main-profile">
+          </div>
+          <div class="carousel-indicators">
+            <span class="indicator active" data-slide="0"></span>
+            <span class="indicator" data-slide="1"></span>
+          </div>
         </div>
         <h1>Hi, I'm <span class="highlight">Gideon Cheruiyot Ngeno</span></h1>
         <p class="hero-subtitle">Full-Stack & Mobile Developer</p>
@@ -198,117 +205,61 @@
 
   <!-- Projects -->
   <section id="projects" class="projects">
-    <h2>Featured Projects</h2>
-    <div class="projects-grid">
-      <!-- KenyaMotors -->
-      <div class="project-card">
-        <div class="project-image"><img src="kenyamotors.jpg" alt="KenyaMotors"></div>
-        <div class="project-content">
-          <h3>KenyaMotors</h3>
-          <p>Inventory management system for a car dealership with vehicle search, financing calculator, and CRM integration.</p>
-          <div class="project-tech">
-            <span><i class="fab fa-vuejs"></i> Vue.js</span>
-            <span><i class="fab fa-php"></i> PHP</span>
-            <span><i class="fas fa-database"></i> MySQL</span>
-          </div>
-        </div>
-      </div>
-      <!-- Melo Music Streaming -->
-      <div class="project-card">
-        <div class="project-image"><img src="melo-music.jpg" alt="Melo Music Streaming"></div>
-        <div class="project-content">
-          <h3>Melo Music Streaming</h3>
-          <p>Music discovery platform with audio player, playlist creation, and recommendation engine.</p>
-          <div class="project-tech">
-            <span><i class="fab fa-html5"></i> Html</span>
-            <span><i class="fab fa-css3-alt"></i> Css</span>
-            <span><i class="fab fa-js"></i> JavaScript</span>
-          </div>
-        </div>
-      </div>
-      <!-- Topbar Movers & Relocations -->
-      <div class="project-card">
-        <div class="project-image"><img src="topbar.jpg" alt="Topbar Movers & Relocations"></div>
-        <div class="project-content">
-          <h3>Topbar Movers & Relocations</h3>
-          <p>Comprehensive relocation service platform with quote calculator, inventory management, and client portal.</p>
-          <div class="project-tech">
-            <span><i class="fab fa-angular"></i> Angular</span>
-            <span><i class="fas fa-bolt"></i> Firebase</span>
-            <span><i class="fas fa-map-marker-alt"></i> Google Maps API</span>
-          </div>
-        </div>
-      </div>
-      <!-- Coffee Shop -->
-      <div class="project-card">
-        <div class="project-image"><img src="coffee-shop.jpg" alt="Coffee Shop"></div>
-        <div class="project-content">
-          <h3>Coffee Shop</h3>
-          <p>A modern e-commerce website for a specialty coffee shop with online ordering, subscription service, and blog.</p>
-          <div class="project-tech">
-            <span><i class="fab fa-react"></i> React</span>
-            <span><i class="fab fa-node-js"></i> Node.js</span>
-            <span><i class="fas fa-database"></i> MongoDB</span>
-            <span><i class="fab fa-stripe"></i> Stripe API</span>
-          </div>
-        </div>
-      </div>
-      <!-- Mobile Task Manager -->
-      <div class="project-card">
-        <div class="project-image"><img src="mobile-task.jpg" alt="Mobile Task Manager"></div>
-        <div class="project-content">
-          <h3>Mobile Task Manager</h3>
-          <p>An intuitive Android application for task management with offline sync capabilities and clean material design interface.</p>
-          <div class="project-tech">
-            <span><i class="fas fa-code"></i> Kotlin</span>
-            <span><i class="fas fa-database"></i> SQLite</span>
-            <span><i class="fab fa-android"></i> Android Studio</span>
-          </div>
-        </div>
-      </div>
-      <!-- Grandma Memory Album -->
-      <div class="project-card">
-        <div class="project-image"><img src="album.jpg" alt="Grandma Memory Album"></div>
-        <div class="project-content">
-          <h3>Grandma Memory Album</h3>
-          <p>An Album to remember my Grandma.</p>
-          <div class="project-tech">
-            <span><i class="fab fa-html5"></i> Html</span>
-            <span><i class="fab fa-css3-alt"></i> Css</span>
-            <span><i class="fab fa-js"></i> JavaScript</span>
-          </div>
-        </div>
-      </div>
+    <h2>My GitHub Repositories</h2>
+    <p style="text-align: center; color: var(--text); margin-bottom: 2rem; opacity: 0.8;">Automatically synced from GitHub. All my latest projects in one place.</p>
+    <div id="github-repos-loading" style="text-align: center; padding: 2rem; color: var(--text);">
+      <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+      <p>Loading repositories from GitHub...</p>
     </div>
-    
-    <!-- GitHub Repositories Section -->
-    <div style="margin-top: 4rem;">
-      <h2 style="color: var(--primary); margin-bottom: 1.5rem; text-align: center; font-size: 2rem;">My GitHub Repositories</h2>
-      <p style="text-align: center; color: var(--text); margin-bottom: 2rem; opacity: 0.8;">Automatically synced from GitHub. All my latest projects in one place.</p>
-      <div id="github-repos-loading" style="text-align: center; padding: 2rem; color: var(--text);">
-        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-        <p>Loading repositories from GitHub...</p>
-      </div>
-      <div id="github-repos-container" class="projects-grid"></div>
-    </div>
+    <div id="github-repos-container" class="projects-grid"></div>
   </section>
-  
-  <!-- Photo Gallery Section -->
-  <section id="gallery" class="gallery-section">
-    <h2>Gallery</h2>
-    <p style="text-align: center; color: var(--text); margin-bottom: 2rem; opacity: 0.8;">A glimpse into my life and experiences</p>
-    <div class="gallery-grid">
-      <div class="gallery-item">
-        <img src="profile-main.jpg" alt="Profile - Park Selfie" class="gallery-image">
-        <div class="gallery-overlay">
-          <p>Park Selfie</p>
+
+  <!-- Future Enhancements / Roadmap -->
+  <section id="roadmap" class="roadmap-section">
+    <h2>Upcoming Features</h2>
+    <p style="text-align: center; color: var(--text); margin-bottom: 2rem; opacity: 0.8;">Exciting features coming to enhance your experience</p>
+    <div class="roadmap-grid">
+      <div class="roadmap-item">
+        <div class="roadmap-icon">
+          <i class="fas fa-blog"></i>
         </div>
+        <h3>Blog Section</h3>
+        <p>Technical articles, tutorials, and insights about software development</p>
       </div>
-      <div class="gallery-item">
-        <img src="about-bg.jpg" alt="Nairobi" class="gallery-image">
-        <div class="gallery-overlay">
-          <p>Nairobi</p>
+      <div class="roadmap-item">
+        <div class="roadmap-icon">
+          <i class="fas fa-file-download"></i>
         </div>
+        <h3>CV Download</h3>
+        <p>Downloadable resume and CV in PDF format</p>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-icon">
+          <i class="fas fa-comments"></i>
+        </div>
+        <h3>Testimonials</h3>
+        <p>Client and colleague testimonials and recommendations</p>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h3>Analytics Dashboard</h3>
+        <p>Project analytics and visitor insights</p>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-icon">
+          <i class="fas fa-language"></i>
+        </div>
+        <h3>Multi-language Support</h3>
+        <p>Support for multiple languages and translations</p>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-icon">
+          <i class="fas fa-mobile-alt"></i>
+        </div>
+        <h3>PWA Support</h3>
+        <p>Progressive Web App capabilities for offline access</p>
       </div>
     </div>
   </section>

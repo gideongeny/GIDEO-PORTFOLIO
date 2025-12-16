@@ -5,11 +5,18 @@ A modern, responsive portfolio website showcasing my projects, skills, and exper
 ## 🌟 Features
 
 - **Auto-Synced GitHub Repositories**: Automatically fetches and displays all your GitHub repositories without manual input
+  - Repository images with gradient placeholders
+  - Direct links to GitHub code and live demos (when available)
+  - Language detection with icons
+  - Star and fork counts
+  - Last updated dates
+- **Profile Image Carousel**: Rotating profile images in hero section with smooth transitions
 - **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 - **Dark Mode**: Toggle between light and dark themes with preference saving
-- **Interactive Gallery**: Showcase your photos and experiences
+- **GitHub Statistics**: Live GitHub stats showing top languages, contribution stats, and streak
 - **Modern UI/UX**: Clean, professional design with smooth animations
 - **Contact Form**: Integrated contact form with FormSubmit
+- **Roadmap Section**: Showcase upcoming features and enhancements
 - **SEO Optimized**: Proper meta tags and semantic HTML
 - **Fast Loading**: Optimized assets and lazy loading for images
 
@@ -70,10 +77,16 @@ GIDEO-PORTFOLIO/
 
 ### Change GitHub Username
 
-In `script.js`, find this line and update the username:
+In `script.js`, find the GitHub API integration section and update the username:
 
 ```javascript
 const username = 'gideongeny'; // Change to your GitHub username
+```
+
+Also update GitHub stats images in `index.html`:
+
+```html
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=gideongeny&..." />
 ```
 
 ### Update Contact Information
@@ -106,12 +119,14 @@ The portfolio automatically fetches your GitHub repositories using the GitHub RE
 - **Filtering**: Excludes forks and the portfolio repository itself
 - **Display**: Shows up to 12 most recently updated repositories
 
-### Features:
-- Real-time repository sync
-- Language detection with icons
-- Star and fork counts
-- Direct links to repository pages
-- Last updated dates
+### Repository Features:
+- **Visual Representation**: Each repository has an image placeholder with gradient backgrounds
+- **Live Demo Links**: Automatically detects and links to repository homepages or GitHub Pages
+- **Repository Images**: Attempts to fetch website screenshots for repositories with live demos
+- **Direct Code Access**: Quick link to GitHub repository code
+- **Language Detection**: Automatic language detection with appropriate icons
+- **Statistics**: Display star counts, fork counts, and last updated dates
+- **Real-time Sync**: Updates automatically when repositories are added or updated on GitHub
 
 ## 📱 Responsive Breakpoints
 
@@ -121,13 +136,12 @@ The portfolio automatically fetches your GitHub repositories using the GitHub RE
 
 ## 🎯 Sections
 
-1. **Hero Section**: Introduction with profile image and social links
-2. **About**: Personal background and experience
+1. **Hero Section**: Introduction with rotating profile image carousel and social links
+2. **About**: Personal background, experience, and GitHub statistics
 3. **Skills**: Technical skills with progress bars
-4. **Featured Projects**: Highlighted projects with images
-5. **GitHub Repositories**: Auto-synced from GitHub
-6. **Gallery**: Photo showcase
-7. **Contact**: Contact form and information
+4. **GitHub Repositories**: Auto-synced repositories with images and live demo links
+5. **Roadmap**: Upcoming features and enhancements
+6. **Contact**: Contact form and information
 
 ## 🔒 Privacy & Security
 
@@ -167,15 +181,29 @@ Made with ❤️ and lots of coffee ☕ by Gideon Ngeno
 
 ---
 
-## 📈 Future Enhancements
+## 📈 Implemented Enhancements
 
-- [ ] Blog section integration
-- [ ] CV/Resume download functionality
-- [ ] Testimonials section
-- [ ] Analytics integration
-- [ ] Multi-language support
-- [ ] PWA capabilities
-- [ ] Performance optimizations
+- ✅ **Auto-synced GitHub repositories** - No manual project updates needed
+- ✅ **Repository images** - Visual representation for each project
+- ✅ **Live demo links** - Direct links to deployed projects
+- ✅ **Profile image carousel** - Rotating photos in hero section
+- ✅ **GitHub statistics widgets** - Live stats showing coding activity
+- ✅ **Roadmap section** - Showcase upcoming features
+
+## 🔮 Future Enhancements
+
+- [ ] Blog section integration with markdown support
+- [ ] CV/Resume download functionality (PDF generation)
+- [ ] Testimonials section with client reviews
+- [ ] Analytics integration (Google Analytics, Plausible)
+- [ ] Multi-language support (i18n)
+- [ ] PWA capabilities (offline access, installable)
+- [ ] Performance optimizations (image compression, code splitting)
+- [ ] Project filtering and search functionality
+- [ ] Detailed project pages with more information
+- [ ] Video demonstrations for projects
+- [ ] RSS feed for blog updates
+- [ ] Newsletter subscription
 
 ---
 
