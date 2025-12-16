@@ -599,8 +599,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const navLinks = document.querySelectorAll('nav .nav-links a');
     const keys = ['about', 'skills', 'projects', 'testimonials', 'blog', 'contact'];
     navLinks.forEach((link, index) => {
-      if (index < keys.length && t.nav && t.nav[keys[index]]) {
-        link.textContent = t.nav[keys[index]];
+      if (index < keys.length && t.nav) {
+        // Special handling for contact link - use fullstack if available
+        if (keys[index] === 'contact' && t.nav.fullstack) {
+          link.textContent = t.nav.fullstack;
+        } else if (t.nav[keys[index]]) {
+          link.textContent = t.nav[keys[index]];
+        }
       }
     });
 
@@ -626,14 +631,6 @@ document.addEventListener("DOMContentLoaded", function() {
       '#contact h2': t.contact?.title
     };
     
-    // Update nav link for contact/fullstack
-    const contactNavLink = document.querySelector('nav .nav-links a[href="#contact"]');
-    if (contactNavLink && t.nav && t.nav.fullstack) {
-      contactNavLink.textContent = t.nav.fullstack;
-    } else if (contactNavLink && t.hero && t.hero.cta) {
-      // Fallback to CTA text if fullstack not available
-      contactNavLink.textContent = t.hero.cta;
-    }
 
     Object.entries(sections).forEach(([selector, text]) => {
       if (text) {
