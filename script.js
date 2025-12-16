@@ -538,20 +538,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }).join('');
   }
 
-  // Fetch GitHub repositories when the projects section is visible
-  const projectsSection = document.getElementById('projects');
-  if (projectsSection) {
-    const projectsObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          fetchGitHubRepositories();
-          projectsObserver.disconnect();
-        }
-      });
-    }, { threshold: 0.1 });
-    
-    projectsObserver.observe(projectsSection);
-  }
+  // Fetch GitHub repositories immediately on page load
+  console.log('Page loaded, starting to fetch GitHub repositories...');
+  fetchGitHubRepositories().catch(error => {
+    console.error('Failed to fetch repositories:', error);
+  });
 
   // === Resume Download Handling ===
   window.downloadResume = function(e) {
