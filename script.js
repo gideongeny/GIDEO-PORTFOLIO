@@ -325,51 +325,91 @@ document.addEventListener("DOMContentLoaded", function() {
     let allRepos = [];
     let page = 1;
     const perPage = 100;
-    const maxPages = 10; // Safety limit to prevent infinite loops
+    const maxPages = 20; // Increased limit for users with many repos
+    
+    const loading = document.getElementById('github-repos-loading');
+    if (loading) {
+      loading.innerHTML = `
+        <div style="text-align: center; padding: 2rem; color: var(--text);">
+          <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+          <p>Loading repositories from GitHub... (Page ${page})</p>
+        </div>
+      `;
+    }
     
     try {
+      console.log('Fetching GitHub repositories for user:', username);
+      
       // Fetch all pages of repositories
       while (page <= maxPages) {
-        const apiUrl = `https://api.github.com/users/${username}/repos?sort=updated&per_page=${perPage}&page=${page}`;
+        console.log(`Fetching page ${page}...`);
+        const apiUrl = `https://api.github.com/users/${username}/repos?sort=updated&per_page=${perPage}&page=${page}&type=all`;
         const response = await fetch(apiUrl);
         
         if (!response.ok) {
-          throw new Error(`Failed to fetch repositories: ${response.status}`);
+          const errorText = await response.text();
+          console.error('API Error:', response.status, errorText);
+          throw new Error(`Failed to fetch repositories: ${response.status} ${response.statusText}`);
         }
         
         const repos = await response.json();
+        console.log(`Page ${page}: Received ${repos.length} repositories`);
         
-        if (repos.length === 0) break; // No more repositories
+        if (repos.length === 0) {
+          console.log('No more repositories found');
+          break; // No more repositories
+        }
         
         allRepos = allRepos.concat(repos);
         
+        // Update loading message
+        if (loading) {
+          loading.innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: var(--text);">
+              <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+              <p>Loading repositories... (Found ${allRepos.length} so far, fetching page ${page + 1}...)</p>
+            </div>
+          `;
+        }
+        
         // If we got fewer than perPage, we've reached the end
-        if (repos.length < perPage) break;
+        if (repos.length < perPage) {
+          console.log('Reached last page');
+          break;
+        }
         
         page++;
         
-        // Small delay to avoid rate limiting
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // Small delay to avoid rate limiting (only if not on last page)
+        if (page <= maxPages) {
+          await new Promise(resolve => setTimeout(resolve, 200));
+        }
       }
+      
+      console.log(`Total repositories fetched: ${allRepos.length}`);
       
       // Filter out ONLY the portfolio repo itself (show forks and all repos)
       const filteredRepos = allRepos.filter(repo => repo.name !== 'GIDEO-PORTFOLIO');
       
-      console.log(`Fetched ${allRepos.length} total repos, showing ${filteredRepos.length} after filtering`);
+      console.log(`After filtering: ${filteredRepos.length} repositories to display`);
       
       // Sort by updated date (most recent first)
       filteredRepos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
       
+      if (filteredRepos.length === 0) {
+        throw new Error('No repositories found');
+      }
+      
       displayGitHubRepositories(filteredRepos);
     } catch (error) {
       console.error('Error fetching GitHub repositories:', error);
-      const loading = document.getElementById('github-repos-loading');
       if (loading) {
         loading.innerHTML = `
           <div style="text-align: center; padding: 2rem; color: var(--text);">
             <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem; color: var(--secondary);"></i>
-            <p>Error loading repositories. Please try refreshing the page.</p>
-            <p style="font-size: 0.9rem; opacity: 0.7;">${error.message}</p>
+            <p>Error loading repositories. Please check the console for details.</p>
+            <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem;">${error.message}</p>
+            <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer;">Retry</button>
           </div>
         `;
       }
