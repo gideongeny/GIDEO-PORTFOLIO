@@ -607,14 +607,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Update navigation links (skip the language toggle button)
     const navLinks = document.querySelectorAll('nav .nav-links a');
-    const keys = ['about', 'skills', 'projects', 'testimonials', 'blog', 'contact'];
-    navLinks.forEach((link, index) => {
-      if (index < keys.length && t.nav) {
-        // Special handling for contact link - use fullstack if available
-        if (keys[index] === 'contact' && t.nav.fullstack) {
-          link.textContent = t.nav.fullstack;
-        } else if (t.nav[keys[index]]) {
-          link.textContent = t.nav[keys[index]];
+    // Map nav links to their correct keys (skip first link "FullStack" which is home)
+    const navLinkMapping = {
+      '#about': 'about',
+      '#skills': 'skills',
+      '#projects': 'projects',
+      '#testimonials': 'testimonials',
+      '#blog': 'blog',
+      '#contact': 'contact'
+    };
+    
+    navLinks.forEach((link) => {
+      const href = link.getAttribute('href');
+      if (href && navLinkMapping[href] && t.nav) {
+        const key = navLinkMapping[href];
+        // For contact, use the contact translation, not fullstack
+        if (t.nav[key]) {
+          link.textContent = t.nav[key];
         }
       }
     });
@@ -725,12 +734,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
               }
               
-              // Make sure percentage is visible from the start
+              // Make sure percentage is ALWAYS visible
               const percentSpan = progressBar.querySelector('.progress-percentage');
               if (percentSpan) {
                 percentSpan.style.opacity = '1';
                 percentSpan.style.visibility = 'visible';
-                percentSpan.style.display = 'block';
+                percentSpan.style.display = 'inline-block';
+                percentSpan.style.position = 'absolute';
+                percentSpan.style.right = '8px';
+                percentSpan.style.top = '50%';
+                percentSpan.style.transform = 'translateY(-50%)';
+                percentSpan.style.zIndex = '10';
+                percentSpan.style.color = '#fff';
+                percentSpan.style.fontWeight = 'bold';
+                percentSpan.style.fontSize = '0.75rem';
+                percentSpan.style.textShadow = '0 1px 2px rgba(0,0,0,0.2)';
               }
               
               // Set initial width to 0, then animate to target
@@ -755,14 +773,23 @@ document.addEventListener("DOMContentLoaded", function() {
       bar.style.opacity = '0';
       bar.style.transform = 'translateY(30px)';
       
-      // Make sure percentage is visible from the start
+      // Make sure percentage is ALWAYS visible from the start
       const progressBar = bar.querySelector('.progress');
       if (progressBar) {
         const percentSpan = progressBar.querySelector('.progress-percentage');
         if (percentSpan) {
           percentSpan.style.opacity = '1';
           percentSpan.style.visibility = 'visible';
-          percentSpan.style.display = 'block';
+          percentSpan.style.display = 'inline-block';
+          percentSpan.style.position = 'absolute';
+          percentSpan.style.right = '8px';
+          percentSpan.style.top = '50%';
+          percentSpan.style.transform = 'translateY(-50%)';
+          percentSpan.style.zIndex = '10';
+          percentSpan.style.color = '#fff';
+          percentSpan.style.fontWeight = 'bold';
+          percentSpan.style.fontSize = '0.75rem';
+          percentSpan.style.textShadow = '0 1px 2px rgba(0,0,0,0.2)';
         }
       }
       
