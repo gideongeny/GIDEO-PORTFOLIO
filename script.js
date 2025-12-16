@@ -339,10 +339,13 @@ document.addEventListener("DOMContentLoaded", function() {
         page++;
       }
       
-      // Filter out the portfolio repo itself and forks
-      const filteredRepos = allRepos.filter(repo => !repo.fork && repo.name !== 'GIDEO-PORTFOLIO');
+      // Filter out ONLY the portfolio repo itself (show forks and all repos)
+      const filteredRepos = allRepos.filter(repo => repo.name !== 'GIDEO-PORTFOLIO');
       
       console.log(`Fetched ${allRepos.length} total repos, showing ${filteredRepos.length} after filtering`);
+      
+      // Sort by updated date (most recent first)
+      filteredRepos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
       
       displayGitHubRepositories(filteredRepos);
     } catch (error) {
